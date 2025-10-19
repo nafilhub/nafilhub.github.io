@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kirim Pesan ke WhatsApp</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Poppins', sans-serif;
+    }
+    .card {
+      width: 450px;
+      border-radius: 20px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
+    .btn-whatsapp {
+      background-color: #25D366;
+      color: white;
+      border-radius: 10px;
+      transition: 0.3s;
+    }
+    .btn-whatsapp:hover {
+      background-color: #1ebe5b;
+      transform: scale(1.05);
+    }
+    .alasan {
+      display: none;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card p-4">
+    <h4 class="text-center mb-3"><b>THE FINAL TEST!</b></h4>
+
+    <input type="hidden" id="nama" value="Varisa Camelia Widodo">
+
+    <div class="mb-3">
+      <label class="form-label">Ceritakan Sedikit Tentang Diri Anda</label>
+      <textarea id="pesan" class="form-control" placeholder="Tulis pesan Anda..."></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Ceritakan Sedikit Tentang Diri Saya</label>
+      <textarea id="pesan2" class="form-control" placeholder="Tulis pesan Anda..."></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Suasana seperti apa yang anda suka?</label>
+      <select id="kategori" class="form-select">
+        <option value="" disabled selected>-- Pilih --</option>
+        <option value="Laut biru yang luas">Laut biru yang luas</option>
+        <option value="Hutan hijau yang sejuk">Hutan hijau yang sejuk</option>
+        <option value="1 Mega bangunan yang ditinggalin milyaran manusia">1 Mega bangunan yang ditinggalin milyaran manusia</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Pilih perubahan untuk saya</label>
+      <select id="waktu" class="form-select">
+        <option value="" disabled selected>-- Pilih --</option>
+        <option value="Berolahraga">Berolahraga</option>
+        <option value="Lebih sabar">Lebih sabar</option>
+        <option value="Lebih ramah">Lebih ramah</option>
+      </select>
+    </div>
+
+    <!-- Suka -->
+    <div class="mb-3">
+      <label class="form-label">Apa yang anda suka dari saya</label><br>
+      <div>
+        <input type="checkbox" id="opsi1" value="Karakter saya ke anda"> Karakter saya ke anda
+        <textarea class="form-control alasan" id="alasan1" placeholder="Alasan..."></textarea>
+      </div>
+      <div>
+        <input type="checkbox" id="opsi2" value="Sikap saya ke anda"> Sikap saya ke anda
+        <textarea class="form-control alasan" id="alasan2" placeholder="Alasan..."></textarea>
+      </div>
+      <div>
+        <input type="checkbox" id="opsi3" value="Cara Komunikasi saya ke anda"> Cara Komunikasi saya ke anda
+        <textarea class="form-control alasan" id="alasan3" placeholder="Alasan..."></textarea>
+      </div>
+      <div>
+        <input type="checkbox" id="opsi4" value="Cara saya berpenampilan"> Cara saya berpenampilan
+        <textarea class="form-control alasan" id="alasan4" placeholder="Alasan..."></textarea>
+      </div>
+    </div>
+
+    <!-- Tidak Suka -->
+    <div class="mb-3">
+      <label class="form-label">Apa yang anda tidak suka dari saya</label><br>
+      <div>
+        <input type="checkbox" id="opsi5" value="Karakter saya ke anda"> Karakter saya ke anda
+        <textarea class="form-control alasan" id="alasan5" placeholder="Alasan..."></textarea>
+      </div>
+      <div>
+        <input type="checkbox" id="opsi6" value="Sikap saya ke anda"> Sikap saya ke anda
+        <textarea class="form-control alasan" id="alasan6" placeholder="Alasan..."></textarea>
+      </div>
+      <div>
+        <input type="checkbox" id="opsi7" value="Cara Komunikasi saya ke anda"> Cara Komunikasi saya ke anda
+        <textarea class="form-control alasan" id="alasan7" placeholder="Alasan..."></textarea>
+      </div>
+      <div>
+        <input type="checkbox" id="opsi8" value="Cara saya berpenampilan"> Cara saya berpenampilan
+        <textarea class="form-control alasan" id="alasan8" placeholder="Alasan..."></textarea>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <button class="btn btn-whatsapp" onclick="kirimPesan()">Kirim ke WhatsApp</button>
+    </div>
+  </div>
+
+  <script>
+    // Tampilkan textarea alasan ketika checkbox dicentang
+    document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+      cb.addEventListener('change', () => {
+        const alasan = cb.nextElementSibling;
+        alasan.style.display = cb.checked ? 'block' : 'none';
+      });
+    });
+
+    function kirimPesan() {
+      const nama = document.getElementById("nama").value;
+      const pesan = document.getElementById("pesan").value;
+      const pesan2 = document.getElementById("pesan2").value;
+      const kategori = document.getElementById("kategori").value;
+      const waktu = document.getElementById("waktu").value;
+
+      // Ambil semua checkbox + alasan
+      let suka = "", tidakSuka = "";
+      for (let i = 1; i <= 4; i++) {
+        const cb = document.getElementById(`opsi${i}`);
+        const alasan = document.getElementById(`alasan${i}`).value;
+        if (cb.checked) suka += `- ${cb.value} (Alasan: ${alasan})\n`;
+      }
+      for (let i = 5; i <= 8; i++) {
+        const cb = document.getElementById(`opsi${i}`);
+        const alasan = document.getElementById(`alasan${i}`).value;
+        if (cb.checked) tidakSuka += `- ${cb.value} (Alasan: ${alasan})\n`;
+      }
+
+      // SweetAlert: untuk tanya ya/tidak
+      Swal.fire({
+        title: "Do u wanna be my GF?",
+        text: "Make a choice",
+        icon: "question",
+        showDenyButton: true,
+        confirmButtonText: "Ya",
+        denyButtonText: "Tidak",
+      }).then((result) => {
+        let jawaban = "";
+        if (result.isConfirmed) {
+          jawaban = "Jawaban dariku: YAAAA! AKUU MAUUUU! 😄";
+        } else if (result.isDenied) {
+          jawaban = "Jawaban terakhir: ga 👎";
+        } else {
+          return; // kalau ditutup tanpa pilihan
+        }
+
+        // Nomor WhatsApp tujuan
+        const nomor = "6281377009199"; 
+
+        const text = 
+`Halo! Saya *${nama}*.
+Ceritaku: ${pesan}
+Tentangmu: ${pesan2}
+Suka suasana: *${kategori}*
+Perubahan yang saya pilih: *${waktu}*
+
+❤️ Hal yang saya suka darimu:
+${suka || "- Tidak ada"}
+
+💔 Hal yang saya tidak suka darimu:
+${tidakSuka || "- Tidak ada"}
+
+${jawaban}`;
+
+        const url = `https://wa.me/${nomor}?text=${encodeURIComponent(text)}`;
+        window.open(url, "_blank");
+      });
+    }
+  </script>
+
+</body>
+</html>
